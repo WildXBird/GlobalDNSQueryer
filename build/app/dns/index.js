@@ -4,7 +4,10 @@ exports.handle = void 0;
 const processor_1 = require("middleware/server/processor");
 const dns_packet_1 = require("dns-packet");
 const dgram_1 = require("dgram");
-const getIP = function (domain, DNSServer = "8.8.8.8") {
+const dnsServers_1 = require("config/dnsServers");
+const dnsList = dnsServers_1.Get_DNS_SERVERS();
+const resolveIPFromDNS = function (domain, DNSServer = "8.8.8.8") {
+    let resolved = false;
     return new Promise(async (resolve, reject) => {
         const socket = dgram_1.createSocket('udp4');
         const buf = dns_packet_1.encode({
@@ -28,61 +31,57 @@ const getIP = function (domain, DNSServer = "8.8.8.8") {
             }
             resolve(ipList);
             socket.close();
+            resolved = true;
         });
         socket.send(buf, 0, buf.length, 53, DNSServer);
         setTimeout(() => {
-            resolve([]);
-            try {
+            if (!resolved) {
+                resolve(false);
                 socket.close();
             }
-            catch (error) {
-            }
-        }, 1000);
+        }, 2500);
     });
 };
-const dnsList = [
-    "199.255.137.34",
-    "82.146.26.2",
-    "94.236.218.254",
-    "8.8.8.8",
-    "151.80.222.79",
-    "200.11.52.202",
-    "200.62.147.66",
-    "91.239.100.100",
-    "89.233.43.71",
-    "80.179.155.145",
-    "180.76.76.76",
-    "199.85.126.10",
-    "203.81.75.37",
-    "161.200.96.9",
-    "85.132.85.85",
-    "103.123.226.10",
-    "62.212.154.152",
-    "216.187.93.250",
-    "66.199.45.225",
-    "177.131.114.86",
-    "149.112.112.112",
-    "31.24.200.4",
-    "190.105.152.28",
-];
+const getIPs = function (domain) {
+    const tasks = [];
+    for (let item of dnsList) {
+        tasks.push(resolveIPFromDNS(domain, item));
+    }
+    const ips = new Set();
+    let serverCount = 0;
+    return new Promise(async (resolve, reject) => {
+        Promise.all(tasks).then((values) => {
+            for (let results of values) {
+                if (results !== false) {
+                    serverCount++;
+                    for (let ip of results) {
+                        ips.add(ip);
+                    }
+                }
+            }
+            resolve({
+                ips: [...ips],
+                servers: serverCount,
+            });
+        });
+    });
+};
 class handle extends processor_1.APIProcessor_Prototype {
     constructor() {
         super("debug handle");
     }
     async handle(httpRequest) {
+        const domain = "ubistatic3-a.akamaihd.net";
+        const startTime = new Date().valueOf();
         const finalResult = new Set();
-        for (let item of dnsList) {
-            console.log("SENDING", "ubistatic3-a.akamaihd.net", item);
-            const result = await getIP("ubistatic3-a.akamaihd.net", item);
-            console.log("GOT:", result);
-            for (let ip of result) {
-                finalResult.add(ip);
-            }
-        }
+        const result = await getIPs(domain);
         return {
             body: {
-                state: "ok",
-                result: [...finalResult],
+                state: "done",
+                domain: domain,
+                result: result.ips,
+                servers: result.servers,
+                takes: new Date().valueOf() - startTime
             }
         };
     }

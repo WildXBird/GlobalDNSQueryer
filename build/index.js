@@ -5,6 +5,7 @@ const hookRequirePath = new HookRequirePath();
 hookRequirePath.addRule('~', './*');
 hookRequirePath.addRule('@', './');
 hookRequirePath.addRule('app', './app');
+hookRequirePath.addRule('@config', '../config');
 hookRequirePath.addRule('config', './config');
 hookRequirePath.addRule('types', './fookingTypes');
 hookRequirePath.addRule('function', './function');
