@@ -1,0 +1,1 @@
+{"version":3,"file":"accessAllowedOrigin.js","sourceRoot":"","sources":["../../../src/middleware/server/accessAllowedOrigin.ts"],"names":[],"mappings":";;;AAEA,gDAA+D;AAM/D,SAAgB,eAAe,CAAC,IAAY;IACxC,IAAI,GAAG,MAAM,CAAC,IAAI,CAAC,CAAA;IACnB,OAAO,iCAAwB,CAAC,QAAQ,CAAC,IAAI,CAAC,CAAA;AAOlD,CAAC;AATD,0CASC"}

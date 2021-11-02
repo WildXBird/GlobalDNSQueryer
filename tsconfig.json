@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "ES2021",
+        // "allowSyntheticDefaultImports": false,
+        "noImplicitAny": true,
+        "strict": true,
+        "allowJs": true,
+        "moduleResolution": "Node",
+        //   "noImplicitAny": true,
+        "removeComments": true,
+        //   "preserveConstEnums": true,
+        "outDir": "build/",
+        "sourceMap": true,
+        "baseUrl": ".",
+        "paths": {
+          "~/*": ["./*"],
+          "@/*": ["./src/*"],
+          "app/*": ["./src/app/*"],
+          "config/*": ["./src/config/*"],
+          "types/*": ["./src/fookingTypes/*"],
+          "function/*": ["./src/function/*"],
+          "middleware/*": ["./src/middleware/*"],
+          "tools/*": ["./src/tools/*"],
+          "vmCore/*": ["./src/vmCore/*"]
+        },
+        "rootDir": "./src",
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "node_modules/",
+        "node_modules/*",
+        "**/*.spec.ts"
+    ]
+}

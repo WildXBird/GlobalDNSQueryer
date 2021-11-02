@@ -1,0 +1,44 @@
+{
+  "main": "index.html",
+  "dependencies": {
+    "@types/mysql": "^2.15.19",
+    "body-parser": "^1.19.0",
+    "chokidar": "^3.5.2",
+    "dgram": "^1.0.1",
+    "dns-packet": "^5.3.0",
+    "eccrypto": "^1.1.6",
+    "error-stack-parser": "^2.0.6",
+    "hook-require-path": "^1.1.0",
+    "js-base64": "^3.6.0",
+    "module-alias": "^2.2.2",
+    "mysql": "^2.18.1",
+    "request": "^2.88.2",
+    "secp256k1": "^4.0.2",
+    "statuses": "^2.0.1",
+    "taskkill": "^3.1.0",
+    "tsc": "^2.0.3",
+    "type-detect": "^4.0.8",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/dns-packet": "^5.2.2",
+    "@types/node": "^16.11.0",
+    "@types/uuid": "^8.3.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/parser": "^4.29.1",
+    "eslint": "^7.32.0",
+    "nodemon": "^2.0.13",
+    "ts-node": "^10.3.0",
+    "tsc": "^2.0.3",
+    "typescript": "^4.4.4"
+  },
+  "scripts": {
+    "dev3": "tsc && XCOPY .\\src .\\build /d && node --inspect ./build/index.js",
+    "dev2": "tsc && XCOPY ./src ./build /d && node --inspect ./build/index.js ",
+    "dev": "node --inspect ./build/index.js",
+    "start": "cd ./build && node --inspect ./index.js"
+  },
+  "_moduleAliases": {
+    "@root": "./build"
+  }
+}
